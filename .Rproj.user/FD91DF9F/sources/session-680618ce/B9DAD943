@@ -1,0 +1,26 @@
+{
+    "id": "B9DAD943",
+    "path": "C:/Users/satos/Documents/SATOM/productive-r-workflow/R/01_load_clean_data.R",
+    "project_path": "R/01_load_clean_data.R",
+    "type": "r_source",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1729775777796.0,
+    "source_on_save": false,
+    "relative_order": 3,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "8,19",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1729845393,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1729845393500,
+    "read_only": false,
+    "read_only_alternatives": []
+}

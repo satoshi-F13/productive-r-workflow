@@ -1,0 +1,175 @@
+---
+title: "Exploring the Penguin Dataset"
+subtitle: "Productive-r-workflow" 
+description: "This document is the example of QUARTO document"
+css: style.css
+
+
+author: 
+  name: "S.Matsumoto"
+  affiliation: "SATOM OÜ"
+email: contact@satom.eu
+
+keywords: "Quarto, Workflow, Data Analysis"
+date: today
+
+title-block-banner: "#f0f3f5"
+title-block-banner-color: "black"
+
+format:
+  html:
+    code-fold: true
+    code-summary: "Show the code"
+    toc: true
+    toc-location: left
+    toc-title: " "
+    number-sections: true
+editor: source
+fig-cap-location: margin
+
+---
+
+::: {.callout-caution collapse="true" }
+## A few consideration about this doc
+This Quarto document serves as a practical illustration of the concepts covered in the productive workflow online course. It’s designed primarily for _educational purposes_, so the focus is on demonstrating Quarto techniques rather than on the rigor of its scientific content.
+The callout reference page is [here](https://quarto.org/docs/authoring/callouts.html).
+:::
+
+
+
+
+
+## Introduction
+This is the case study to make an html report by quarto. 
+You can read more about the **penguin dataset** [here](https://allisonhorst.github.io/palmerpenguins/).
+
+Let's **load** libraries before we start!
+
+```{r, warning=FALSE, message=FALSE}
+# load the tidyverse
+library(tidyverse)
+library(hrbrthemes)    # ipsum theme for ggplot2 charts
+library(patchwork)     # combine charts together
+library(DT)            # interactive tables
+library(knitr)         # static table with the kable() function
+
+```
+## Loading data
+
+The dataset has already been loaded and cleaned in the previous step of this pipeline.
+
+Let's load the clean version, together with a few functions available in `functions.R`!
+
+```{r}
+# Source functions
+source(file = "functions.R")
+
+# Read the clean dataset
+data <- readRDS(file = "../input/clean_data.rds")
+```
+
+![Bill measurement explanation](asset/culmen_depth.png){fig-align="center"  width=300}
+
+In case you’re wondering how the original dataset looks like, here is a searchable version of it, made using the DT package
+```{r}
+datatable(data = data, options = list(pageLength =5), filter = "top")
+```
+
+
+## Bill Length and Bill Depth
+
+Now, let's make some descriptive analysis, including __summary statistics__ and __graphs__.
+
+What's striking is the __slightly negative relationship__ between `bill length` and `bill depth`:
+
+
+```{r, fig.align = "center", fig.width=5, fig.height=5, warning=FALSE, fig.cap="Relationship between bill <b>length</b> and bill <b>depth</b>. <b>All</b> data points included."}
+data %>%
+  ggplot(
+    aes(x = bill_length_mm, y = bill_depth_mm)
+  ) +
+    geom_point(color="#69b3a2") +
+    labs(
+      x = "Bill Length (mm)",
+      y = "Bill Depth (mm)",
+      title = paste("Surprising relationship?")
+    ) + 
+  theme_classic()
+
+
+```
+
+It is also interesting to note that `bill length` a and `bill depth` are quite different from one specie to another. The average of a variable can be computed as follow:
+
+$$Avg  = \frac{1}{n} \displaystyle\sum_{i=1}^{n} a_i = \frac{a_1+a_2+\dots+a_n}{n}$$
+
+`bill length` and `bill depth` averages are summarized in the 2 tables below.
+
+
+```{r}
+#| layout-ncol: 2
+
+# Calculating mean bill length for different species and islands using dplyr
+bill_length_per_specie <-
+data %>%
+  # filter(species == "Adelie") %>%
+  group_by(species) %>%
+  summarize(mean_bill_length = round(mean(as.numeric(bill_length_mm), na.rm = TRUE), 2))
+
+# Calculating average bill depth for different species and islands using dplyr
+bill_depth_per_specie <-
+data %>%
+  # filter(species == "Adelie") %>%
+  group_by(species) %>%
+  summarize(mean_bill_depth = round(mean(as.numeric(bill_depth_mm), na.rm = TRUE), 2))
+adelie_avg <- 
+  data%>%
+  filter(species == "Adelie") %>% 
+  # group_by(species) %>%
+  summarize(mean_bill_length = round(mean(as.numeric(bill_length_mm), na.rm = TRUE), 2))
+
+# Display in the Quarto report
+kable(bill_length_per_specie)
+kable(bill_depth_per_specie)
+```
+
+
+For instance, the average bill length for the specie `Adelie` is `r adelie_avg` 
+
+
+
+Now, let's check the relationship between bill depth and bill length for the specie `Adelie` on the island `Torgersen`:
+
+
+```{r, warning=FALSE, fig.height=3, fig.width=9, fig.cap="There is actually a positive correlation when split by species."}
+
+#
+# Use the function in functions.R
+p1 <- create_scatterplot(data, "Adelie", "#6689c6")
+p2 <- create_scatterplot(data, "Chinstrap", "#e85252")
+p3 <- create_scatterplot(data, "Gentoo", "#9a6fb0")
+
+p1+p2+p3
+
+```
+
+
+
+
+
+## `plotly` and `ggplotly`
+```{r}
+library(ggplot2)
+library(gapminder)
+
+p <- gapminder %>%
+  filter(year==1977) %>%
+  ggplot( aes(gdpPercap, lifeExp, size = pop, color=continent)) +
+  geom_point() +
+  theme_bw()
+library(plotly)
+ggplotly(p)
+```
+
+
+

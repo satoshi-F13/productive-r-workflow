@@ -1,0 +1,33 @@
+"0","library(ggplot2)"
+"0","library(gapminder)"
+"0",""
+"0","p <- gapminder %>%"
+"0","  filter(year==1977) %>%"
+"0","  ggplot( aes(gdpPercap, lifeExp, size = pop, color=continent)) +"
+"0","  geom_point() +"
+"0","  theme_bw()"
+"0","library(plotly)"
+"2","Registered S3 method overwritten by 'data.table':
+  method           from
+  print.data.table     
+"
+"2","
+Attaching package: ‘plotly’
+
+"
+"2","The following object is masked from ‘package:ggplot2’:
+
+    last_plot
+
+"
+"2","The following object is masked from ‘package:stats’:
+
+    filter
+
+"
+"2","The following object is masked from ‘package:graphics’:
+
+    layout
+
+"
+"0","ggplotly(p)"
