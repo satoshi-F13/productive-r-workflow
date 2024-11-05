@@ -3,7 +3,7 @@
     "path": "C:/Users/satos/Documents/SATOM/test_folder/test_file.R",
     "project_path": null,
     "type": "r_source",
-    "hash": "4188050943",
+    "hash": "0",
     "contents": "",
     "dirty": false,
     "created": 1730724811556.0,
@@ -16,11 +16,11 @@
         "scrollLine": "0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1730724830,
+    "lastKnownWriteTime": 1730728567,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1730724830930,
+    "last_content_update": 1730728567,
     "read_only": false,
     "read_only_alternatives": []
 }
